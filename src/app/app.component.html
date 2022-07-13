@@ -1,3 +1,14 @@
-<p>schedule</p>
-
-<hello name="Tushar"></hello>
+<div *ngFor="let top of topLevelNames; let i = index">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header> {{ top.name }} </mat-expansion-panel-header>
+    <hello
+      [name]="top.name"
+      (checkChangeEventEmit)="setCurrentChecked(top.name, $event)"
+    ></hello>
+  </mat-expansion-panel>
+</div>
+<ul>
+  <li *ngFor="let kv of currentSelected | keyvalue">
+    {{ kv.key }} - {{ kv.value }}
+  </li>
+</ul>

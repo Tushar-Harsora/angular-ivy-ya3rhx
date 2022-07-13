@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon/icon-module';
-import { MatButtonModule } from '@angular/material/button/button-module';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button/button-module';
     MatExpansionModule,
     MatTreeModule,
     MatCardModule,
+    MatButtonModule,
   ],
   declarations: [AppComponent, HelloComponent],
   bootstrap: [AppComponent],

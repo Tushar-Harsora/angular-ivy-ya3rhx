@@ -1,4 +1,4 @@
-export class Turno {
+export class SecondLevel {
   name: string;
   checked: boolean;
 }
