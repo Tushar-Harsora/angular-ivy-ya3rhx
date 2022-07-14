@@ -53,10 +53,21 @@ export class HelloComponent {
     this.arrDias.forEach((dia: FirstLevel) => {
       const secondLevel = new FormArray([]);
       this.turnos.forEach((turno: SecondLevel) => {
+        const thirdLevel = new FormArray([]);
+        this.thirdlev.forEach((thirdLevelEle: SecondLevel) => {
+          thirdLevel.push(
+            new FormGroup({
+              name: new FormControl(thirdLevelEle.name),
+              checked: new FormControl(thirdLevelEle.checked),
+            })
+          );
+        });
+
         secondLevel.push(
           new FormGroup({
             name: new FormControl(turno.name),
             checked: new FormControl(turno.checked),
+            thirdLevel,
           })
         );
       });
@@ -87,6 +98,15 @@ export class HelloComponent {
       .get('secondLevel') as FormArray;
   }
 
+  getThirdLevelArray(
+    firstLevelIndex: number,
+    secondLevelIndex: number
+  ): FormArray {
+    return this.getSecondLevelArray(firstLevelIndex)
+      .at(secondLevelIndex)
+      .get('thirdLevel') as FormArray;
+  }
+
   private setListeners(): void {
     this.topLevelFormArray.controls.forEach((topLevelEle: FormGroup) => {
       topLevelEle.controls['checked'].valueChanges.subscribe((value) => {
@@ -98,32 +118,45 @@ export class HelloComponent {
         });
         // this.sendCheckedBoxes();
       });
-    });
 
-    // this.topLevelFormArray.controls.forEach((topLevelEle: FormGroup) => {
-    //   (
-    //     (topLevelEle.controls['secondLevel'] as FormArray)
-    //       .controls as FormGroup[]
-    //   ).forEach((secondLevel: FormGroup) => {
-    //     console.log(secondLevel);
-    //     secondLevel.controls['checked'].valueChanges.subscribe((value) => {
-    //       this.sendCheckedBoxes();
-    //     });
-    //   });
-    // });
+      (
+        (topLevelEle.controls['secondLevel'] as FormArray)
+          .controls as FormGroup[]
+      ).forEach((secondLevelEle: FormGroup) => {
+        secondLevelEle.controls['checked'].valueChanges.subscribe((value) => {
+          (
+            (secondLevelEle.controls['thirdLevel'] as FormArray)
+              .controls as FormGroup[]
+          ).forEach((thirdLevelEle: FormGroup) => {
+            thirdLevelEle.controls['checked'].setValue(value);
+          });
+        });
+      });
+    });
   }
 
   sendCheckedBoxes(): any {
     var checkedArray = [] as string[];
-    this.topLevelFormArray.controls.forEach((something: FormGroup) => {
+    this.topLevelFormArray.controls.forEach((firstLevelEle: FormGroup) => {
       // console.log(something);
       (
-        (something.controls['secondLevel'] as FormArray).controls as FormGroup[]
-      ).forEach((thing: FormGroup) => {
-        if (thing.value.checked) {
-          checkedArray.push(something.value.name + '_' + thing.value.name);
-        }
-        // console.log(thing.value.checked);
+        (firstLevelEle.controls['secondLevel'] as FormArray)
+          .controls as FormGroup[]
+      ).forEach((secondLevelEle: FormGroup) => {
+        (
+          (secondLevelEle.controls['thirdLevel'] as FormArray)
+            .controls as FormGroup[]
+        ).forEach((thirdLevelEle: FormGroup) => {
+          if (thirdLevelEle.value.checked) {
+            checkedArray.push(
+              firstLevelEle.value.name +
+                '_' +
+                secondLevelEle.value.name +
+                '_' +
+                thirdLevelEle.value.name
+            );
+          }
+        });
       });
     });
     console.log('Sending ', checkedArray);

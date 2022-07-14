@@ -26,6 +26,24 @@
               >
                 {{ second.value.name }}
               </mat-checkbox>
+
+              <div formArrayName="thirdLevel">
+                <div
+                  *ngFor="
+                    let third of getThirdLevelArray(i, j).controls;
+                    let k = index
+                  "
+                  [formGroupName]="k"
+                >
+                  <mat-checkbox
+                    style="padding-left:60px"
+                    formControlName="checked"
+                    (change)="sendCheckedBoxes()"
+                  >
+                    {{ second.value.name + third.value.name }}
+                  </mat-checkbox>
+                </div>
+              </div>
             </div>
           </div>
         </div>

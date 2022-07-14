@@ -25,6 +25,10 @@ export class AppComponent {
     // this.initForm();
   }
 
+  getTopLevelNames() {
+    return this.topLevelNames;
+  }
+
   setCurrentChecked(tagName: string, checkedItems: string[]) {
     // console.log(checkedItems);
     this.currentSelected.set(tagName, checkedItems);
